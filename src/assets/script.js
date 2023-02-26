@@ -4,7 +4,7 @@ const products = [{
     price: 10,
     quantity: 0,
     productId: 2001,
-    image: /images/cherry.jpg,
+    image: "images/cherry.jpg",
   },
 
   {
@@ -12,16 +12,17 @@ const products = [{
     price: 15,
     quantity: 0,
     productId: 2002,
-    image: /images/orange.jpg
+    image: "images/orange.jpg"
   },
   {
     name: 'strawberry',
     price: 20,
     quantity: 0,
     productId: 2003,
-    image: /images/orange.jpg
+    image: "images/strawberry.jpg"
   }
 ]
+
 /* Create 3 or more product objects using object literal notation 
    Each product should include five properties
    - name: name of product (string)
@@ -56,6 +57,9 @@ function addProductToCart(productId) {
 
     cart.push(item);
 
+    cart[cart.length - 1].quantity += 1;
+
+  
   }
 };
 /* Create a function named increaseQuantity that takes in the productId as an argument
@@ -64,19 +68,14 @@ function addProductToCart(productId) {
 */
 function increaseQuantity(productId) {
 
-  cart = cart.map((item) => {
+  for ( let index = 0; index<cart.length; index++ ) {
 
-    let quantity = item.quantity
+    if ( cart[index].productId === productId) {
 
-    if (item.productId === productId) {
-
-      quantity++
+      cart[index].quantity += 1
 
     }
-
-    return item;
-
-  })
+  }
 };
 
 /* Create a function named decreaseQuantity that takes in the productId as an argument
@@ -86,26 +85,18 @@ function increaseQuantity(productId) {
 */
 
 function decreaseQuantity(productId) {
+  for ( let index = 0; index<cart.length; index++ ) {
 
-  cart = cart.map((item) => {
+    if ( cart[index].productId === productId) {
 
-    let quantity = item.quantity
+      cart[index].quantity -= 1;
 
-    if (item.productId === productId) {
-
-      if (quantity > 0) {
-
-        quantity--
-
-      } else {
-
+      if ( cart[index].quantity === 0){
         removeProductFromCart(productId)
-
-      }
-
-      return item
-    }
-  })
+      };
+    } 
+  
+  }
 };
 
 /* Create a function named removeProductFromCart that takes in the productId as an argument
@@ -115,8 +106,11 @@ function decreaseQuantity(productId) {
 */
 
 function removeProductFromCart(productId){
-  
-  cart = cart.filter((item)=> item.productId !== productId)
+
+  let item = cart.findIndex((product) => product.productId === productId)
+
+  cart.splice(item,1)
+
 };
 /* Create a function named cartTotal that has no parameters
   - cartTotal should iterate through the cart to get the total of all products
@@ -131,15 +125,33 @@ function cartTotal(){
 
     totalPrice+= item.price * item.quantity;
 
-    return Number(totalPrice.toFixed(2));
   })
+
+  return Number(totalPrice.toFixed(2))
 };
 /* Create a function called emptyCart that empties the products from the cart */
 
+function emptyCart() {
+
+  cart = [];
+}
 /* Create a function named pay that takes in an amount as an argument
   - pay will return a negative number if there is a remaining balance
   - pay will return a positive number if money should be returned to customer
 */
+let totalPaid = 0
+
+function pay(amount){
+
+totalPaid += amount;
+
+const totalPrice = cartTotal(),
+
+remaining = totalPaid - totalPrice;
+
+return remaining >= 0 && (totalPaid = 0),remaining;
+
+}
 
 /* Place stand out suggestions here (stand out suggestions can be found at the bottom of the project rubric.)*/
 
