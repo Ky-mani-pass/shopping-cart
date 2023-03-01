@@ -45,21 +45,22 @@ const cart = [];
   - addProductToCart should then increase the product's quantity
   - if the product is not already in the cart, add it to the cart
 */
+function getProductByIdFromList(productId, productList) {
+  return products.find((product) => product.productId === productId);
+}
+
 function addProductToCart(productId) {
 
-  if (cart.some((item) => item.productId === productId)) {
+  let product = getProductByIdFromList(productId, products)
 
-    increaseQuantity(productId)
+  if (!cart.includes(product)) {
 
-  } else {
-
-    const item = products.find((product) => product.productId === productId);
-
-    cart.push(item);
+    cart.push(product);
 
     cart[cart.length - 1].quantity += 1;
+  } else {
 
-  
+    increaseQuantity(productId)
   }
 };
 /* Create a function named increaseQuantity that takes in the productId as an argument
@@ -68,13 +69,12 @@ function addProductToCart(productId) {
 */
 function increaseQuantity(productId) {
 
-  for ( let index = 0; index<cart.length; index++ ) {
+  let product = getProductByIdFromList(productId, cart)
 
-    if ( cart[index].productId === productId) {
+  for (let index = 0; index < cart.length; index++) {
 
-      cart[index].quantity += 1
+    product.quantity += 1
 
-    }
   }
 };
 
@@ -85,17 +85,18 @@ function increaseQuantity(productId) {
 */
 
 function decreaseQuantity(productId) {
-  for ( let index = 0; index<cart.length; index++ ) {
 
-    if ( cart[index].productId === productId) {
+  let product = getProductByIdFromList(productId, cart);
 
-      cart[index].quantity -= 1;
+  for (let index = 0; index < cart.length; index++) {
 
-      if ( cart[index].quantity === 0){
-        removeProductFromCart(productId)
-      };
-    } 
-  
+    product.quantity -= 1;
+
+    if (product.quantity === 0) {
+      removeProductFromCart(productId);
+    }
+
+
   }
 };
 
@@ -105,11 +106,13 @@ function decreaseQuantity(productId) {
   - removeProductFromCart should remove the product from the cart
 */
 
-function removeProductFromCart(productId){
+function removeProductFromCart(productId) {
 
-  let item = cart.findIndex((product) => product.productId === productId)
+  let product = getProductByIdFromList(productId, cart);
 
-  cart.splice(item,1)
+  product.quantity = 0;
+
+  cart.splice(cart.indexOf(product), 1);
 
 };
 /* Create a function named cartTotal that has no parameters
@@ -117,13 +120,13 @@ function removeProductFromCart(productId){
   - cartTotal should return the sum of the products in the cart
 */
 
-function cartTotal(){
+function cartTotal() {
 
   let totalPrice = 0
 
-  cart.forEach((item)=> {
+  cart.forEach((item) => {
 
-    totalPrice+= item.price * item.quantity;
+    totalPrice += item.price * item.quantity;
 
   })
 
@@ -133,7 +136,7 @@ function cartTotal(){
 
 function emptyCart() {
 
-  cart = [];
+  const cart = [cart.splice(0, cart.length)];
 }
 /* Create a function named pay that takes in an amount as an argument
   - pay will return a negative number if there is a remaining balance
@@ -141,15 +144,16 @@ function emptyCart() {
 */
 let totalPaid = 0
 
-function pay(amount){
+function pay(amount) {
 
-totalPaid += amount;
+  totalPaid += amount;
 
-const totalPrice = cartTotal(),
+  remaining = totalPaid - cartTotal();
 
-remaining = totalPaid - totalPrice;
-
-return remaining >= 0 && (totalPaid = 0),remaining;
+  if (remaining >= 0) {
+    totalPaid = 0;
+  }
+  return remaining;
 
 }
 
