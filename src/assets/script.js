@@ -163,7 +163,8 @@ function pay(amount) {
 /* The following is for running unit tests. 
    To fully complete this project, it is expected that all tests pass.
    Run the following command in terminal to run tests
-   npm run test q
+   npm run test 
+*/
 
 module.exports = {
   products,
