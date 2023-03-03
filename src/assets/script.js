@@ -71,11 +71,8 @@ function increaseQuantity(productId) {
 
   let product = getProductByIdFromList(productId, cart)
 
-  for (let index = 0; index < cart.length; index++) {
-
     product.quantity += 1
 
-  }
 };
 
 /* Create a function named decreaseQuantity that takes in the productId as an argument
@@ -88,16 +85,11 @@ function decreaseQuantity(productId) {
 
   let product = getProductByIdFromList(productId, cart);
 
-  for (let index = 0; index < cart.length; index++) {
-
     product.quantity -= 1;
 
     if (product.quantity === 0) {
       removeProductFromCart(productId);
     }
-
-
-  }
 };
 
 /* Create a function named removeProductFromCart that takes in the productId as an argument
@@ -148,12 +140,7 @@ function pay(amount) {
 
   totalPaid += amount;
 
-  remaining = totalPaid - cartTotal();
-
-  if (remaining >= 0) {
-    totalPaid = 0;
-  }
-  return remaining;
+  return totalPaid - cartTotal();
 
 }
 
