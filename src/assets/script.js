@@ -62,6 +62,9 @@ function addProductToCart(productId) {
 
     increaseQuantity(productId)
   }
+
+  return product
+
 };
 /* Create a function named increaseQuantity that takes in the productId as an argument
   - increaseQuantity should get the correct product based on the productId
@@ -140,7 +143,12 @@ function pay(amount) {
 
   totalPaid += amount;
 
-  return totalPaid - cartTotal();
+  remaining = totalPaid - cartTotal();
+
+  if (remaining >= 0) {
+    totalPaid = 0;
+  }
+  return remaining;
 
 }
 
